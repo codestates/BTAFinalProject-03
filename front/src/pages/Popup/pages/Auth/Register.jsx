@@ -8,7 +8,7 @@ const Register = () => {
     // click event 
     const onClick = () => {
         console.log("call register function")
-
+        setPageState('Home');
     }
 
     return (
