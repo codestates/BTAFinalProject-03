@@ -2,6 +2,8 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import CreateWallet from "../pages/CreateWallet/CreateWallet";
 import Home from "../pages/Home/Home";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
 import { pageState } from "../recoil";
 
 export const render = () => {
@@ -9,7 +11,9 @@ export const render = () => {
     
     switch (page) {
         case 'Home': return <Home /> 
-        case 'CreateWallet': return <CreateWallet /> 
+        case 'CreateWallet': return <CreateWallet />
+        case 'Login': return <Login />
+        case 'Register': return <Register /> 
         default: return <div>no page</div>
     }
 }
