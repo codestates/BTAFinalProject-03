@@ -8,7 +8,7 @@ const NavBar = () => {
   return (
     <AppBar
       position="static"
-      style={{ backgroundColor: `white`, height: `60px` }}
+      style={{ backgroundColor: `white`, height: `60px`}}
     >
       <Toolbar style={{ display: `flex`, justifyContent: `space-between` }}>
         <Link
