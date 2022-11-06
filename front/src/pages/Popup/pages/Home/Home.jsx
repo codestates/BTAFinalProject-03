@@ -1,10 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import { useSetRecoilState } from 'recoil';
+import { SDK } from '../../modules/sdk';
 import { pageState } from '../../recoil';
 import './Home.css';
 
 const Home = () => {
     const setPageState = useSetRecoilState(pageState);
+
+
+    useEffect(() => {
+        SDK.generateMnemonic();
+    }, [])
 
     const [pubkey, setpubkey] = useState();
     const [balance, setBalance] = useState();
