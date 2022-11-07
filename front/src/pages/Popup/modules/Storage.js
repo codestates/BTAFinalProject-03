@@ -1,4 +1,6 @@
 export default class Storage {
+    static encryptMnemonic = 'encrypt_mnemonic';
+
     static async set(key, value) {
         if (typeof key !== "string") {
             throw 'key는 문자열입니다';
@@ -25,6 +27,14 @@ export default class Storage {
                 resolve(data[key]);
             })
         })
+    }
+
+    static async setEncryptMnemonic(encryptMnemonic) {
+        await this.set(this.encryptMnemonic, encryptMnemonic);
+    }
+
+    static async getEncryptMnemonic() {
+        return await this.get(this.encryptMnemonic, '');
     }
 
     static async clear(){
