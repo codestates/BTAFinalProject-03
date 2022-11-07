@@ -8,6 +8,8 @@ import Box from '@mui/material/Box';
 import DetailsTab from "../components/tabs/DetailsTab";
 import EventsTab from "../components/tabs/EventsTab";
 import SignaturesTab from "../components/tabs/SignaturesTab";
+import {JsonRpcProvider, Network} from "@mysten/sui.js";
+import {useEffect, useState} from "react";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -46,6 +48,11 @@ const substitution = (txId: string): string => {
     return txId.replaceAll('!', '\/')
 };
 
+/*
+* sui devnet endpoint URI : https://fullnode.devnet.sui.io
+*/
+const provider = new JsonRpcProvider(Network.DEVNET);
+
 const GetTx = () => {
     const txId = useParams();
     const jsonId = JSON.stringify(txId);
@@ -57,9 +64,34 @@ const GetTx = () => {
         setValue(newValue);
     };
 
+    const [transactions, setTransactions] = useState<any>({});
+
+    useEffect(() => {  // 마운트 하지 않아도 실행 하는 소스
+        getTransaction(substitution(resultId.txId));
+    }, [])
+
+    const getTransaction = async (txId: string) => {
+        const resultObj = await provider.getTransactionWithEffects(txId);
+        const resultJson = JSON.stringify(resultObj);
+        const parseResult = JSON.parse(resultJson);
+        setTransactions(parseResult);
+    }
+
     return (
         <div>
-            <h2>{substitution(resultId.txId)}</h2>
+            <h2>
+                {
+                    transactions &&
+                    transactions.certificate &&
+                    transactions.certificate.transactionDigest
+                }
+            </h2>
+            {
+                transactions &&
+                transactions.effects &&
+                transactions.effects.status &&
+                transactions.effects.status.status
+            }
             <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

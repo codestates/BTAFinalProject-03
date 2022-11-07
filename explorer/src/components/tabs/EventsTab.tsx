@@ -1,4 +1,35 @@
+import {JsonRpcProvider, Network} from "@mysten/sui.js";
+import {useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+
+/*
+* sui devnet endpoint URI : https://fullnode.devnet.sui.io
+*/
+const provider = new JsonRpcProvider(Network.DEVNET);
+
+const substitution = (txId: string): string => {
+    return txId.replaceAll('!', '\/')
+};
+
 const EventsTab = () => {
+    const txId = useParams();
+    const jsonId = JSON.stringify(txId);
+    const resultId = JSON.parse(jsonId);
+
+    const [transactions, setTransactions] = useState<any>({});
+
+    useEffect(() => {  // 마운트 하지 않아도 실행 하는 소스
+        getTransaction(substitution(resultId.txId));
+    }, [])
+
+    const getTransaction = async (txId: string) => {
+        const resultObj = await provider.getTransactionWithEffects(txId);
+        const resultJson = JSON.stringify(resultObj);
+        const parseResult = JSON.parse(resultJson);
+        setTransactions(parseResult);
+    }
+    console.log(transactions);
+
     return (
         <div className="tab_info">
             <div>
@@ -6,31 +37,88 @@ const EventsTab = () => {
                 <table>
                     <tr>
                         <td>Sender</td>
-                        <td>Sender DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.certificate &&
+                                transactions.certificate.data &&
+                                transactions.certificate.data.sender
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Balance Change Type</td>
-                        <td>Balance Change Type DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[0] &&
+                                transactions.effects.events[0].coinBalanceChange &&
+                                transactions.effects.events[0].coinBalanceChange.changeType
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Coin Type</td>
-                        <td>Coin Type DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[0] &&
+                                transactions.effects.events[0].coinBalanceChange &&
+                                transactions.effects.events[0].coinBalanceChange.coinType
+
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Coin Object ID</td>
-                        <td>Coin Object ID DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[0] &&
+                                transactions.effects.events[0].coinBalanceChange &&
+                                transactions.effects.events[0].coinBalanceChange.coinObjectId
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Version</td>
-                        <td>Version DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[0] &&
+                                transactions.effects.events[0].coinBalanceChange &&
+                                transactions.effects.events[0].coinBalanceChange.version
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Owner</td>
-                        <td>Owner DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[0] &&
+                                transactions.effects.events[0].coinBalanceChange &&
+                                transactions.effects.events[0].coinBalanceChange.owner &&
+                                transactions.effects.events[0].coinBalanceChange.owner.AddressOwner
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Amount</td>
-                        <td>Amount DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[0] &&
+                                transactions.effects.events[0].coinBalanceChange &&
+                                transactions.effects.events[0].coinBalanceChange.amount
+                            }
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -39,11 +127,35 @@ const EventsTab = () => {
                 <table>
                     <tr>
                         <td>Module</td>
-                        <td>Module DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[1] &&
+                                transactions.effects.events[1].newObject &&
+                                transactions.effects.events[1].newObject.transactionModule
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Sender, Recipient</td>
-                        <td>Sender, Recipient DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[1] &&
+                                transactions.effects.events[1].newObject &&
+                                transactions.effects.events[1].newObject.sender
+                            } <span>→</span>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[1] &&
+                                transactions.effects.events[1].newObject &&
+                                transactions.effects.events[1].newObject.recipient &&
+                                transactions.effects.events[1].newObject.recipient.AddressOwner
+                            }
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -52,31 +164,82 @@ const EventsTab = () => {
                 <table>
                     <tr>
                         <td>Type</td>
-                        <td>Type DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[2] &&
+                                transactions.effects.events[2].moveEvent &&
+                                transactions.effects.events[2].moveEvent.type
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Sender</td>
-                        <td>Sender DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[2] &&
+                                transactions.effects.events[2].moveEvent &&
+                                transactions.effects.events[2].moveEvent.sender
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>BCS</td>
-                        <td>BCS DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[2] &&
+                                transactions.effects.events[2].moveEvent &&
+                                transactions.effects.events[2].moveEvent.bcs
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>Fields</td>
-                        <td>Fields DATA</td>
                     </tr>
                     <tr>
                         <td>creator</td>
-                        <td>creator DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[2] &&
+                                transactions.effects.events[2].moveEvent &&
+                                transactions.effects.events[2].moveEvent.fields &&
+                                transactions.effects.events[2].moveEvent.fields.creator
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>name</td>
-                        <td>name DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[2] &&
+                                transactions.effects.events[2].moveEvent &&
+                                transactions.effects.events[2].moveEvent.fields &&
+                                transactions.effects.events[2].moveEvent.fields.name
+                            }
+                        </td>
                     </tr>
                     <tr>
                         <td>object_id</td>
-                        <td>object_id DATA</td>
+                        <td>
+                            {
+                                transactions &&
+                                transactions.effects &&
+                                transactions.effects.events[2] &&
+                                transactions.effects.events[2].moveEvent &&
+                                transactions.effects.events[2].moveEvent.fields &&
+                                transactions.effects.events[2].moveEvent.fields.object_id
+
+                            }
+                        </td>
                     </tr>
                 </table>
             </div>
