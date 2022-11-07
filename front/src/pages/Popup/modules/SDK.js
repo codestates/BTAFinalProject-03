@@ -7,7 +7,6 @@ const provider = new JsonRpcProvider(Network.DEVNET);
 export class SDK {
     static generateMnemonic() {
         const mnemonics = bip39.generateMnemonic(wordlist);
-        this.getPair(mnemonics);
         return mnemonics;
     }
 
@@ -18,8 +17,6 @@ export class SDK {
         const seed64Bytes = await bip39.mnemonicToSeed(mnemonics);
         const seed32Bytes = seed64Bytes.slice(0, 32);
         const keypair = Ed25519Keypair.fromSeed(seed32Bytes).keypair;
-        console.log(keypair)
-        this.getAddress(keypair.publicKey);
         return keypair;
     }
 
@@ -28,9 +25,6 @@ export class SDK {
     */
     static getAddress(publicKey) {
         const address = new Ed25519PublicKey(publicKey).toSuiAddress();
-        console.log(address);
-        this.getBalance();
-        this.getObject();
         return "0x" + address;
     }
 
@@ -54,11 +48,8 @@ export class SDK {
         return result;
     }
 
-    /*
-    * 잔액조회 
-    */
-    static async getBalance() {
-        const objects = await provider.getObjectsOwnedByAddress('0x6f03a907c902323c09040eaadb2d71d24dc8f1fb');
+    static async getBalance(address) {
+        const objects = await provider.getObjectsOwnedByAddress(address);
 
         let balance = 0;
         for(let i = 0; i < objects.length; i++){

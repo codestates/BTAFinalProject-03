@@ -2,19 +2,25 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import CreateWallet from "../pages/CreateWallet/CreateWallet";
 import Home from "../pages/Home/Home";
-import Login from "../pages/Auth/Login";
-import Register from "../pages/Auth/Register";
 import SendToken from "../pages/Transaction/SendToken";
 import { pageState } from "../recoil";
+import Select from "../pages/Select/Select";
+import ConfirmRecoveryPhrase from "../pages/ConfirmRecoveryPhrase/ConfirmRecoveryPhrase";
+import MyWallet from "../pages/MyWallet/MyWallet";
+import Login from "../pages/Login/Login";
+import ImportWallet from "../pages/ImportWallet/ImportWallet";
 
 export const render = () => {
     const page = useRecoilValue(pageState);
     
     switch (page) {
         case 'Home': return <Home /> 
+        case 'Select': return <Select></Select>
         case 'CreateWallet': return <CreateWallet />
+        case 'ConfirmRecoveryPhrase': return <ConfirmRecoveryPhrase />
         case 'Login': return <Login />
-        case 'Register': return <Register /> 
+        case 'MyWallet': return <MyWallet />
+        case 'ImportWallet': return <ImportWallet />
         case 'SendToken': return <SendToken /> 
         default: return <div>no page</div>
     }
