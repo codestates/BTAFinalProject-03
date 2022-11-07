@@ -66,7 +66,7 @@ const ImportWallet = () => {
     useEffect(async () => {
         await Storage.clear();
     }, [])
-    
+
     return (
         <div className="ImportWallet">
             <div className="import-wallet-title">Import Wallet</div>
@@ -75,7 +75,7 @@ const ImportWallet = () => {
                 setPassword(e.target.value);
             }}/>
 
-            <div style={{'marginBottom': "10px"}}>
+            <div style={{'marginBottom': "10px", 'textAlign': 'left'}}>
                 {'\u00A0'}
                 <span className={`${error1 === ''? '': 'visibility-visible'} import-wallet-error-message`}>{error1}</span>
             </div>
@@ -84,7 +84,7 @@ const ImportWallet = () => {
                 setRePassword(e.target.value);
             }}/>
 
-            <div style={{'marginBottom': "10px"}}>
+            <div style={{'marginBottom': "10px", 'textAlign': 'left'}}>
                 {'\u00A0'}
                 <span className={`${error2 === ''? '': 'visibility-visible'} import-wallet-error-message`}>{error2}</span>
             </div>
@@ -93,7 +93,7 @@ const ImportWallet = () => {
                 setMnemonic(e.target.value);
             }}/>
 
-            <div>
+            <div style={{'textAlign': 'left'}}>
                 {'\u00A0'}
                 <span className={`${error3 === ''? '': 'visibility-visible'} import-wallet-error-message`}>{error3}</span>
             </div>
