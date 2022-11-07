@@ -41,6 +41,9 @@
     border-radius: 12px;
     color: white;
     background-color: #0284ad;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 90%;
     border: none;
     cursor: pointer;
     margin: auto 0 20px 0;

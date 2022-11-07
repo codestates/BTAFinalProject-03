@@ -85,6 +85,9 @@
     background-color: gray;
     border: none;
     cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 90%;
     pointer-events: none;
     margin: auto 0 20px 0;
 }

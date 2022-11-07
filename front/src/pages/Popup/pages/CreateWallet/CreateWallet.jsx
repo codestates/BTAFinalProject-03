@@ -76,7 +76,7 @@ const CreateWallet = () => {
                 <input className="password-input" type="password" onChange={(e) => {
                     setPassWord(e.target.value);
                 }} />
-                <div>
+                <div style={{'textAlign': 'left'}}>
                     {'\u00A0'}
                     <span className={`error-message ${error1 === ''? '': 'visibility-visible'}`}>{error1}</span>
                 </div>
@@ -86,7 +86,7 @@ const CreateWallet = () => {
                 <input className="password-input" type="password" onChange={(e) => {
                     setRePassWord(e.target.value);
                 }} />
-                <div>
+                <div style={{'textAlign': 'left'}}>
                     {'\u00A0'}
                     <span className={`error-message ${error2 === ''? '': 'visibility-visible'}`}>{error2}</span>
                 </div>
