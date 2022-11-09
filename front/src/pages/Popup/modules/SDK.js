@@ -73,9 +73,6 @@ export class SDK {
     }
 
     static async getBalance(address) {
-        console.log("param address : " + address);
-        console.log("param address : " + typeof address);
-
         const objects = await provider.getObjectsOwnedByAddress(address);
 
         let balance = 0;
@@ -145,12 +142,12 @@ export class SDK {
     * 02. 각 객체의 digest를 가져오고, 
     * 03. transaction data 에서 필요한 정보를 가져옴. 
     */
-    static async getHistoryTranssaction(){
-
+    static async getHistoryTranssaction(pub){
 
         //함수 테스트용, 실제 연결할때는 파라미터를 공개키로 받고 아래 코드 대체 예정 
         console.log("Staring get transaction history");
-        const pubkey = '0x52a2abe8940ae83a48e707a4d583db5b8e40a2b5';
+        // const pubkey = '0x52a2abe8940ae83a48e707a4d583db5b8e40a2b5';
+        const pubkey = pub;
 
         //공개키로 모든 digest 내역 가져오기
         const resultOfdiget = await provider.getTransactionsForAddress(pubkey);
@@ -245,21 +242,15 @@ export class SDK {
     * 테스트 토큰 요청하기
     */
     static async getRequestTestToken(publicKey){
-
-        console.log("STRAT Get sui ");
         const _pubkey = publicKey;
 
         const _provider = new JsonRpcProvider(Network.DEVNET, {
             // you can also skip providing this field if you don't plan to interact with the faucet
             faucetURL: 'https://faucet.devnet.sui.io',
-          });
-
-        _provider.requestSuiFromFaucet(_pubkey)
-        .then((result) => {
-            console.log("response : " + result);
         });
 
-
+        const result = await _provider.requestSuiFromFaucet(_pubkey)
+        console.log("response : " + result);
     }
 
     /*

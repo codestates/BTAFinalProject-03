@@ -1,18 +1,19 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import CreateWallet from "../pages/CreateWallet/CreateWallet";
 import Home from "../pages/Home/Home";
 import SendToken from "../pages/Transaction/SendToken";
-import { pageState } from "../recoil";
+import { intervalState, pageState } from "../recoil";
 import Select from "../pages/Select/Select";
 import ConfirmRecoveryPhrase from "../pages/ConfirmRecoveryPhrase/ConfirmRecoveryPhrase";
 import MyWallet from "../pages/MyWallet/MyWallet";
 import Login from "../pages/Login/Login";
 import ImportWallet from "../pages/ImportWallet/ImportWallet";
+import History from "../pages/History/History";
 
 export const render = () => {
     const page = useRecoilValue(pageState);
-    
+
     switch (page) {
         case 'Home': return <Home /> 
         case 'Select': return <Select></Select>
@@ -21,6 +22,7 @@ export const render = () => {
         case 'Login': return <Login />
         case 'MyWallet': return <MyWallet />
         case 'ImportWallet': return <ImportWallet />
+        case 'History': return <History />
         case 'SendToken': return <SendToken /> 
         default: return <div>no page</div>
     }

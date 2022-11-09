@@ -19,4 +19,3 @@ export const pairState = atom({
     key: 'pair',
     default: {}
 })
-
