@@ -15,8 +15,8 @@ export class SDK {
     */
     static async getPair(mnemonics) {
         const seed64Bytes = await bip39.mnemonicToSeed(mnemonics);
-        const seed32Bytes = seed64Bytes.slice(0, 32);
-        const keypair = Ed25519Keypair.fromSeed(seed32Bytes).keypair;
+        // const seed32Bytes = seed64Bytes.slice(0, 32);
+        const keypair = Ed25519Keypair.fromSeed(seed64Bytes.slice(0,32));
         return keypair;
     }
 
@@ -31,24 +31,51 @@ export class SDK {
     /*
     * 송금
     */
-    static async sendToken(keypair) {
-        const signer = new RawSigner(keypair, provider);
+    static async sendToken(_keypair, _pubkey, _toAddress, _amount) {
+
+        /*
+        const mnemonics = "gentle embrace hard glance lake method draft fossil stick settle pear glove";
+        const seed = await bip39.mnemonicToSeed(mnemonics);
+        console.log("convert to seed : " + seed);
+        console.log("convert to seed : " + typeof seed);
+
+        const keypairTeset = Ed25519Keypair.fromSeed(seed.slice(0,32));
+        console.log("test : " + keypairTeset);
+        */
+
+        //송금 signer 생성
+        const signer = new RawSigner(_keypair, provider);
+        console.log("convert to signer : " + signer);
+
+
+        //공개키가 보유한 sui object 조회
+        const map = await this.getOwnSuiList(_pubkey);
+        console.log("Own Sui List : "+ map);
+        const _suiOnjectId = map.keys().next().value;
+        console.log("_suiOnjectId : "+ _suiOnjectId);
+
+        const sendAmount = _amount * 10000000;
 
         const txn = {
             //코인 객체 id
-            suiObjectId: "0x33ef108d19289702a352a86b6f948d5e4b437500",
+            suiObjectId: _suiOnjectId,
             gasBudget: 1000,
             //받는 사람 주소
-            recipient: "0x52a2abe8940ae83a48e707a4d583db5b8e40a2b5",
-            amount: 5000000
+            recipient: _toAddress,
+            amount: sendAmount
         }
 
         const result = await signer.transferSuiWithRequestType(txn);
+         
+        console.log(`send sui complete : ${result}`);
+        return result;    
 
-        return result;
     }
 
     static async getBalance(address) {
+        console.log("param address : " + address);
+        console.log("param address : " + typeof address);
+
         const objects = await provider.getObjectsOwnedByAddress(address);
 
         let balance = 0;
@@ -70,10 +97,10 @@ export class SDK {
     /*
     * 보유하고 있는 수이 리스트 
     */
-    static async getOwnSuiList() {
+    static async getOwnSuiList(publicKey) {
 
         //테스트용 공개키 주소, 파라미터로 공개키 받을 것 
-        const _pubkey = '0x52a2abe8940ae83a48e707a4d583db5b8e40a2b5';
+        const _pubkey = publicKey;
         console.log("STRAT SEARCHING History OF transaction");
 
         //결과를 리턴하기 위한 map 정의 (key : 오브젝트id, value {타입, 잔액})
@@ -104,9 +131,6 @@ export class SDK {
             //typescript에서 map은 set으로 값을 새로 지정해줌. 최근 값만 업데이트가 되기 때문에 기존 밸류값을 템프에 넣어두고 다시 셋에 사용함. 
             const tempValue = map.get(resultOfObjects[i].objectId);
             map.set(resultOfObjects[i].objectId, [tempValue,objectBalance]);                
-
-            //map 구조 셋팅 확인용 
-            console.log("check values : " + map.get('0x4fbc250ac48976a36898777fe94f2f5540f99e22'));
         }
 
         console.log("return map : "+map);
@@ -235,6 +259,23 @@ export class SDK {
             console.log("response : " + result);
         });
 
+
+    }
+
+    /*
+    * 수이 계좌 검증
+    */ 
+    static async isSuiAddress(publicKey){
+
+        const SUI_ADDRESS_LENGTH = 20;
+    
+        const checkReg1 = /^(0x|0X)?[a-fA-F0-9]+$/.test(publicKey) && publicKey.length % 2 === 0;
+        const checkReg2 = /^(0x|0X)/.test(publicKey) ? (publicKey.length - 2) / 2 : publicKey.length / 2;
+        const checkReg3 = SUI_ADDRESS_LENGTH
+
+        console.log(`checkReg1 : ${checkReg1}, checkReg2 : ${checkReg2}, checkReg3 : ${checkReg3}`);
+        console.log(checkReg1 && checkReg2 === checkReg3);
+        return (checkReg1 && checkReg2 === checkReg3)
 
     }
 

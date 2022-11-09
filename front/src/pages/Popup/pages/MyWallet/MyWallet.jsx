@@ -17,13 +17,17 @@ const MyWallet = () => {
     const [balance, setBalance] = useState(0);
 
     useEffect(async () => {
-        setAddress(SDK.getAddress(pair.publicKey));
+        setAddress(SDK.getAddress(pair.getPublicKey()));
         setBalance(await SDK.getBalance(address));
-    }, [])
+    }, [address])
 
     const deleteWallet = async () => {
         await Storage.clear();
         setPageState('Home');
+    }
+
+    const send = () => {
+        setPageState('SendToken');
     }
 
     return (
@@ -37,7 +41,7 @@ const MyWallet = () => {
 
             <div>
                 <button onClick={deleteWallet}>DeleteWallet</button>
-                <button>Send</button>
+                <button onClick={send}>Send</button>
             </div>
 
             <Footer />
