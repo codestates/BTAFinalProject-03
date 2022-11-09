@@ -29,11 +29,12 @@ const GetAddr = () => {
 
     return (
         <div className="tab_info">
+            <h3>Address</h3>
             <h2>
                 {
-                    transactions &&
-                    transactions.certificate &&
-                    transactions.certificate.transactionDigest
+                    transactions[0] &&
+                    transactions[0].owner &&
+                    transactions[0].owner.AddressOwner
                 }
             </h2>
             <div>

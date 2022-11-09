@@ -69,7 +69,7 @@ const substitution = (txId: string): string => {
 };
 
 const rows = [
-    createData('1s', 'Call', '/LYICDtQC+oXAjrQPIQR2GRP0/0ZVb0sEoieOW2O6E0=', '0x562e68a011bc3cd29b001962cd789809eea9c817', '--', '0.000001038SUI'),
+    createData('1s', 'Call', '2PvxYmLjWZjp5WUm9QXtUUZKH5lI9w+xsc1RLDIzPyA=', '0x562e68a011bc3cd29b001962cd789809eea9c817', '--', '0.000001038SUI'),
 ];
 
 

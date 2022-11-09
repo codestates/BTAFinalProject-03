@@ -1,5 +1,5 @@
 import {JsonRpcProvider, Network} from "@mysten/sui.js";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 /*
@@ -32,217 +32,280 @@ const EventsTab = () => {
 
     return (
         <div className="tab_info">
-            <div>
-                <b><h2>Coin Balance Change</h2></b>
-                <table>
-                    <tr>
-                        <td>Sender</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.certificate &&
-                                transactions.certificate.data &&
-                                transactions.certificate.data.sender
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Balance Change Type</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[0] &&
-                                transactions.effects.events[0].coinBalanceChange &&
-                                transactions.effects.events[0].coinBalanceChange.changeType
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Coin Type</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[0] &&
-                                transactions.effects.events[0].coinBalanceChange &&
-                                transactions.effects.events[0].coinBalanceChange.coinType
-
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Coin Object ID</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[0] &&
-                                transactions.effects.events[0].coinBalanceChange &&
-                                transactions.effects.events[0].coinBalanceChange.coinObjectId
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Version</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[0] &&
-                                transactions.effects.events[0].coinBalanceChange &&
-                                transactions.effects.events[0].coinBalanceChange.version
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Owner</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[0] &&
-                                transactions.effects.events[0].coinBalanceChange &&
-                                transactions.effects.events[0].coinBalanceChange.owner &&
-                                transactions.effects.events[0].coinBalanceChange.owner.AddressOwner
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Amount</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[0] &&
-                                transactions.effects.events[0].coinBalanceChange &&
-                                transactions.effects.events[0].coinBalanceChange.amount
-                            }
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="new_object_info">
-                <b><h2>New Object</h2></b>
-                <table>
-                    <tr>
-                        <td>Module</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[1] &&
-                                transactions.effects.events[1].newObject &&
-                                transactions.effects.events[1].newObject.transactionModule
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sender, Recipient</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[1] &&
-                                transactions.effects.events[1].newObject &&
-                                transactions.effects.events[1].newObject.sender
-                            } <span>→</span>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[1] &&
-                                transactions.effects.events[1].newObject &&
-                                transactions.effects.events[1].newObject.recipient &&
-                                transactions.effects.events[1].newObject.recipient.AddressOwner
-                            }
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div>
-                <b><h2>Move Event</h2></b>
-                <table>
-                    <tr>
-                        <td>Type</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[2] &&
-                                transactions.effects.events[2].moveEvent &&
-                                transactions.effects.events[2].moveEvent.type
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sender</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[2] &&
-                                transactions.effects.events[2].moveEvent &&
-                                transactions.effects.events[2].moveEvent.sender
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>BCS</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[2] &&
-                                transactions.effects.events[2].moveEvent &&
-                                transactions.effects.events[2].moveEvent.bcs
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Fields</td>
-                    </tr>
-                    <tr>
-                        <td>creator</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[2] &&
-                                transactions.effects.events[2].moveEvent &&
-                                transactions.effects.events[2].moveEvent.fields &&
-                                transactions.effects.events[2].moveEvent.fields.creator
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>name</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[2] &&
-                                transactions.effects.events[2].moveEvent &&
-                                transactions.effects.events[2].moveEvent.fields &&
-                                transactions.effects.events[2].moveEvent.fields.name
-                            }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>object_id</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.effects &&
-                                transactions.effects.events[2] &&
-                                transactions.effects.events[2].moveEvent &&
-                                transactions.effects.events[2].moveEvent.fields &&
-                                transactions.effects.events[2].moveEvent.fields.object_id
-
-                            }
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            {
+                transactions &&
+                transactions.effects &&
+                transactions.effects.events &&
+                transactions.effects.events.map((item: any) => {
+                    if (item.coinBalanceChange) {
+                        return (
+                            <div>
+                                <b><h2>Coin Balance Change</h2></b>
+                                <table>
+                                    <tr>
+                                        <td>Sender</td>
+                                        {
+                                            transactions.certificate &&
+                                            <Link to={'/get-addr/' + transactions.certificate.data.sender}
+                                                  state={{addr: transactions.certificate.data.sender}}>
+                                                <td>
+                                                    {
+                                                        transactions &&
+                                                        transactions.certificate &&
+                                                        transactions.certificate.data &&
+                                                        transactions.certificate.data.sender
+                                                    }
+                                                </td>
+                                            </Link>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>Balance Change Type</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.coinBalanceChange &&
+                                                item.coinBalanceChange.changeType
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coin Type</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.coinBalanceChange &&
+                                                item.coinBalanceChange.coinType
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Coin Object ID</td>
+                                        <Link to={'/get-obj/' + item.coinBalanceChange.coinObjectId}
+                                              state={{objId: item.coinBalanceChange.coinObjectId}}>
+                                            <td>
+                                                {
+                                                    item &&
+                                                    item.coinBalanceChange &&
+                                                    item.coinBalanceChange.coinObjectId
+                                                }
+                                            </td>
+                                        </Link>
+                                    </tr>
+                                    <tr>
+                                        <td>Version</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.coinBalanceChange &&
+                                                item.coinBalanceChange.version
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Owner</td>
+                                        <Link to={'/get-addr/' + item.coinBalanceChange.owner.AddressOwner}
+                                              state={{addr: item.coinBalanceChange.owner.AddressOwner}}>
+                                            <td>
+                                                {
+                                                    item &&
+                                                    item.coinBalanceChange &&
+                                                    item.coinBalanceChange.owner &&
+                                                    item.coinBalanceChange.owner.AddressOwner
+                                                }
+                                            </td>
+                                        </Link>
+                                    </tr>
+                                    <tr>
+                                        <td>Amount</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.coinBalanceChange &&
+                                                item.coinBalanceChange.amount
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        )
+                    } else if (item.mutateObject) {
+                        return (
+                            <div>
+                                <b><h2>Mutate Object</h2></b>
+                                <table>
+                                    <tr>
+                                        <td>Object Type</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.mutateObject &&
+                                                item.mutateObject.objectType
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Object ID</td>
+                                        <td>
+                                            <Link to={'/get-obj/' + item.mutateObject.objectId}
+                                                  state={{objId: item.mutateObject.objectId}}>
+                                                {
+                                                    item &&
+                                                    item.mutateObject &&
+                                                    item.mutateObject.objectId
+                                                }
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Version</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.mutateObject &&
+                                                item.mutateObject.version
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sender</td>
+                                        <td>
+                                            <Link to={'/get-addr/' + item.mutateObject.sender}
+                                                  state={{addr: item.mutateObject.sender}}>
+                                                {
+                                                    item &&
+                                                    item.mutateObject &&
+                                                    item.mutateObject.sender
+                                                }
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        )
+                    } else if (item.newObject) {
+                        return (
+                            <div>
+                                <b><h2>New Object</h2></b>
+                                <table>
+                                    <tr>
+                                        <td>Module</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.newObject &&
+                                                item.newObject.transactionModule
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sender, Recipient</td>
+                                        <td>
+                                            <Link to={'/get-addr/' + item.newObject.sender}
+                                                  state={{addr: item.newObject.sender}}>
+                                                {
+                                                    item &&
+                                                    item.newObject &&
+                                                    item.newObject.sender
+                                                }
+                                            </Link>
+                                            <span>→</span>
+                                            <Link to={'/get-addr/' + item.newObject.recipient.AddressOwner}
+                                                  state={{addr: item.newObject.recipient.AddressOwner}}>
+                                                {
+                                                    item &&
+                                                    item.newObject &&
+                                                    item.newObject.recipient &&
+                                                    item.newObject.recipient.AddressOwner
+                                                }
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        )
+                    } else if (item.moveEvent) {
+                        return (
+                            <div>
+                                <b><h2>Move Event</h2></b>
+                                <table>
+                                    <tr>
+                                        <td>Type</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.moveEvent &&
+                                                item.moveEvent.type
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sender</td>
+                                        <Link to={'/get-addr/' + item.moveEvent.sender}
+                                              state={{addr: item.moveEvent.sender}}>
+                                            <td>
+                                                {
+                                                    transactions &&
+                                                    transactions.effects &&
+                                                    item &&
+                                                    item.moveEvent &&
+                                                    item.moveEvent.sender
+                                                }
+                                            </td>
+                                        </Link>
+                                    </tr>
+                                    <tr>
+                                        <td>BCS</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.moveEvent &&
+                                                item.moveEvent.bcs
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fields</td>
+                                    </tr>
+                                    <tr>
+                                        <td>creator</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.moveEvent &&
+                                                item.moveEvent.fields &&
+                                                item.moveEvent.fields.creator
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>name</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.moveEvent &&
+                                                item.moveEvent.fields &&
+                                                item.moveEvent.fields.name
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>object_id</td>
+                                        <td>
+                                            {
+                                                item &&
+                                                item.moveEvent &&
+                                                item.moveEvent.fields &&
+                                                item.moveEvent.fields.object_id
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        )
+                    }
+                })
+            }
         </div>
     )
 }
