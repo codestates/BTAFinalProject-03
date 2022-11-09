@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import './SendToken.css';
 import {useRecoilValue, useSetRecoilState} from "recoil";
 import {pageState, pairState} from "../../recoil/index";
 import { SDK } from '../../modules/sdk';
@@ -13,6 +14,7 @@ const SendToken = () => {
     const [disabled, setDisabled] = useState();
     const [pubkey, setPubkey] = useState();
     const [balance, setBalance] = useState(0);
+    const [message, setMessage] = useState();
 
     useEffect(async() => {
         setDisabled(true);
@@ -36,7 +38,15 @@ const SendToken = () => {
         console.log("===== Amount : ======" + amount);
         console.log("=====================");
         //공개키 메인에서 페이지 전환 시 전달 받을 것, 
-        SDK.sendToken(pair, pubkey, toAddress, amount);
+        SDK.sendToken(pair, pubkey, toAddress, amount)
+        .then((result) =>{
+            console.log(`send result is ${result}`);
+            setMessage("송금이 완료되었습니다.");
+
+        })
+        .catch((error) => {
+
+        });
     }
 
     /*
@@ -56,24 +66,28 @@ const SendToken = () => {
 
 
 return (
-    <div className="Home">
-        <div className="Home-title">SendToken</div> 
-            <div className='Home-input-address-title'>
-                Enter or search the address of the recepient below to start sending coins.
-                <div className='Home-input-address'>
-                    <input onChange={(e) => setAddress(e.target.value)} name="amount" placeholder="sui"></input>
-                </div>
+    <div className="Send">
+
+        <div className="Send-title">SendToken</div> 
+
+            <div className='Send-Address-input-box'>
+                <p className='Send-Address-input-subtitle'>Enter or search the address of the recepient below to start sending coins.</p>
+                    <input className='Send-Address-input' onChange={(e) => setAddress(e.target.value)} name="toaddress" placeholder="Address"></input>
             </div>
-            <div className='Home-input-amount-title'>
-                Amount
-                <div className='Home-input-amount'>
-                    <input onChange={(e) => setAmount(e.target.value)}name="toAddress" placeholder="To"></input>       
-                </div>
-                Available is <div className='balance'>{balance === 0 ? '...' : '0.'+balance}  SUI</div>
+            <div className='Send-Amuount-input-box'>
+                <p className='Send-Amuount-input-subtitle'>Amount</p>
+              
+                    <input className='Send-Amuount-input' onChange={(e) => setAmount(e.target.value)}name="amount" placeholder="Amount"></input>       
+            
             </div>
-            <div className='submit-button'>
-                <button disabled={disabled} onClick={send} type="submit">Transfer Sui</button>
-            </div> 
+
+            <div className="balance-check">
+                Available is <div className='balance'>{balance === 0 ? '...' : '0.'+balance}  Sui</div>
+            </div>
+
+            
+            <button className={`submit-button-${disabled}`} onClick={send} type="submit">Transfer Sui</button>
+            <div className="sent-message">{message}</div>
     </div>
 
     );

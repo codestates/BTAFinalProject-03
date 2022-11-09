@@ -1,13 +1,109 @@
-.Home {
+.Send {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background: linear-gradient(180deg, white 50%, #9fbcdf 100%);;
+    background: rgb(210, 231, 244);
+    padding: 0 30px 0 30px;
 }
 
-.home-title {
-    font-size: 26px;
+.Send-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #3d444d;
+    margin: 20px 0;
+}
+
+.Send-Address-input-box {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+}
+
+.Send-Address-input {
+    border: 1px solid #bbc0c5;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 0 15px;
+}
+
+.Send-Address-input-subtitle{
+    font-size: 20px;
+    font-weight: 700;
+    color: #3d444d;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.Send-Amuount-input-box {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+}
+
+.Send-Amuount-input {
+    border: 1px solid #bbc0c5;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    padding: 0 15px;
+}
+
+.Send-Amuount-input-subtitle{
+    font-size: 20px;
+    font-weight: 700;
+    color: #3d444d;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.balance-check{
+    font-size: 20px;
+    font-weight: 700;
+    color: #3d444d;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.balance{
+    border: 1px solid #bbc0c5;
+    box-sizing: border-box;
+    border-radius: 6px;
+    font-size: 10px;
+}
+
+.submit-button-false{
+    margin: 40px 0;
+    align-items: center;
+    border-radius: 12px;
+    background-color: #0284ad;
+    display: flex;
+    justify-content: center;
     font-weight: 600;
-    color: #0284ad;
-    margin: 60px 0 20px 0;
+    font-size: 17px;
+    line-height: 150%;
+    border: none;
+    color: white;
+}
+
+.submit-button-true{
+    margin: 40px 0;
+    align-items: center;
+    border-radius: 12px;
+    background-color: #b4b4b4;
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 150%;
+    border: none;
+    color: white;
+}
+
+.sent-message{
+    font-size: 13px;
+    font-weight: 700;
+    color: #5050FF;
 }
