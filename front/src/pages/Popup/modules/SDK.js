@@ -150,7 +150,7 @@ export class SDK {
         const pubkey = pub;
 
         //공개키로 모든 digest 내역 가져오기
-        const resultOfdiget = await provider.getTransactionsForAddress(pubkey);
+        const resultOfdiget = await provider.getTransactionsForAddress(pubkey, false);
         // console.log("resultOfdiget : "+resultOfdiget);
         console.log("resultOfdiget : "+resultOfdiget.length);
 
