@@ -146,13 +146,11 @@ export class SDK {
 
         //함수 테스트용, 실제 연결할때는 파라미터를 공개키로 받고 아래 코드 대체 예정 
         console.log("Staring get transaction history");
-        // const pubkey = '0x52a2abe8940ae83a48e707a4d583db5b8e40a2b5';
-        const pubkey = pub;
+        const pubkey = '0x7d5784e654d4385fcf059ad6bd0819e2a383ba18';
+        // const pubkey = pub;
 
         //공개키로 모든 digest 내역 가져오기
         const resultOfdiget = await provider.getTransactionsForAddress(pubkey, false);
-        // console.log("resultOfdiget : "+resultOfdiget);
-        console.log("resultOfdiget : "+resultOfdiget.length);
 
         // 이 데이터로 원하는 데이터 뽑아냄 {return : flag: sent or receiver, recipients : 받은 사람, amount : 받은 돋, gas: 수수료}
         // flag는 recipents의 주소가 입력한 공개키와 일치하면 받은 돈, 불일치하면 보낸 돈으로 판단 
@@ -160,11 +158,12 @@ export class SDK {
         let _flag, _recipients, _amount, _gas;
         const map = new Map();
 
+        let list = [];
         for (let i=0; i<resultOfdiget.length; i++){
             //digest로 transaction 디테일 불러오기
             const history = await provider.getTransactionWithEffects(resultOfdiget[i]);
-            console.log(`${i}번째 digest : ${resultOfdiget[i]}`);
-    
+
+            // console.log(history);
             //불러온 내역 중에서 transactions만 빼오기
             const selector = history.certificate.data.transactions;
             // console.log("selector : " + JSON.stringify(selector));
@@ -172,7 +171,7 @@ export class SDK {
     
             //PaySui가 여러개 토큰을 발행해주는 메소드로 판단되어 분기 처리 
             const methodName = JSON.stringify(selector).split("\"")[1];
-            console.log("methodName : "+ methodName);
+            // console.log("methodName : "+ methodName);
     
             //json data 대괄호를 없애기 위한 작업
             const a = JSON.stringify(selector[0]);
@@ -230,11 +229,22 @@ export class SDK {
                 }
             }
             
-            console.log(`_flag : ${_flag}, _recipients : ${_recipients}, _amount : ${_amount}, _gas : ${_gas}`);
-            map.set(i, [_flag, _recipients, _amount, _gas]);
+            // console.log(`_flag : ${_flag}, _recipients : ${_recipients}, _amount : ${_amount}, _gas : ${_gas}`);
+            // map.set(i, [_flag, _recipients, _amount, _gas]);
+            list.push({
+                transaction_digest: resultOfdiget[i],
+                method_name: methodName,
+                _flag,
+                _recipients,
+                _amount,
+                _gas,
+                timestamp: history.timestamp_ms
+            })
 
         }
-        return map;
+
+        return list;
+        // return map;
 
     }
 

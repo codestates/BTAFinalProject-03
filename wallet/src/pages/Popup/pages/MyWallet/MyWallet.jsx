@@ -13,6 +13,7 @@ const MyWallet = () => {
 
     const [address, setAddress] = useState('');
     const [balance, setBalance] = useState('pending');
+    const [faucetStatus, setFaucetStatus] = useState('');
 
     useEffect(() => {
         const addressOfPub = SDK.getAddress(pair.getPublicKey());
@@ -32,7 +33,13 @@ const MyWallet = () => {
     }
 
     const faucet = async () => {
-        await SDK.getRequestTestToken(SDK.getAddress(pair.getPublicKey()));
+        try{
+            setFaucetStatus('');
+            await SDK.getRequestTestToken(SDK.getAddress(pair.getPublicKey()));
+            setFaucetStatus('Wait for a minute');
+        }catch(e){
+            setFaucetStatus('Request Fail');
+        }
     }
 
     return (
@@ -40,12 +47,13 @@ const MyWallet = () => {
             <Header />
 
             <div className='wallet-info-box'>
-                <div className='address'>{address}</div>
-                <div className='balance'>{balance === 'pending' ? '...' : '0.'+balance}  SUI</div>
+                <div className='mywallet-address'>{address}</div>
+                <div className='mywallet-balance'>{balance === 'pending' ? '...' : '0.'+balance}  SUI</div>
             </div>
 
             <div>
                 <button className='wallet-btn-faucet' onClick={faucet}>Faucet</button>
+                <div className='mywallet-faucet-status'>{faucetStatus}</div>
             </div>
 
             <Footer />
