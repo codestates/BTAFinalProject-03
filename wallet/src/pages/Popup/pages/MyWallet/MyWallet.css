@@ -11,14 +11,14 @@
     margin: 30px 0;
 }
 
-.address {
+.mywallet-address {
     font-size: 14px;
     margin: 40px 0;
     color: #898d93;
     font-weight: 500;
 }
 
-.balance {
+.mywallet-balance {
     color: #182435;
     font-size: 28px;
     font-weight: 700;
@@ -37,4 +37,10 @@
 
 .wallet-btn-faucet:hover {
     background-color: #84a2ac;
+}
+
+.mywallet-faucet-status {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 16px;
 }
