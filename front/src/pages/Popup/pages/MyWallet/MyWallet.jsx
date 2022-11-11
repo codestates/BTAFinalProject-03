@@ -32,7 +32,7 @@ const MyWallet = () => {
     }
 
     const faucet = async () => {
-        await SDK.getRequestTestToken(pair.getPublicKey());
+        await SDK.getRequestTestToken(SDK.getAddress(pair.getPublicKey()));
     }
 
     return (
@@ -41,7 +41,7 @@ const MyWallet = () => {
 
             <div className='wallet-info-box'>
                 <div className='address'>{address}</div>
-                <div className='balance'>{balance === 'pending' ? '...' : balance}  SUI</div>
+                <div className='balance'>{balance === 'pending' ? '...' : '0.'+balance}  SUI</div>
             </div>
 
             <div>
