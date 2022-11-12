@@ -1,6 +1,8 @@
 import {JsonRpcProvider, Network} from "@mysten/sui.js";
 import {useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
+import {Box, LinearProgress, Table, TableBody, TableCell, TableContainer, TableRow, Typography} from "@mui/material";
+import * as React from "react";
 
 /*
 * sui devnet endpoint URI : https://fullnode.devnet.sui.io
@@ -17,10 +19,20 @@ const SignaturesTab = () => {
     const resultId = JSON.parse(jsonId);
 
     const [transactions, setTransactions] = useState<any>({});
+    const [data, setData] = useState<any>(true);
+    const isMounted = useRef(false)
 
     useEffect(() => {  // 마운트 하지 않아도 실행 하는 소스
         getTransaction(substitution(resultId.txId));
     }, [])
+
+    useEffect(() => {
+        if(isMounted.current){
+            setData(false)
+        } else {
+            isMounted.current = true;
+        }
+    }, [transactions])
 
     const getTransaction = async (txId: string) => {
         const resultObj = await provider.getTransactionWithEffects(txId);
@@ -30,39 +42,72 @@ const SignaturesTab = () => {
     }
 
     return (
-        <div className="tab_info">
+        <>
+            {
+                data &&
+                <LinearProgress />
+            }
+
             <div>
-                <b><h2>Transaction Signatures</h2></b>
-                <table>
-                    <tr>
-                        <td>Signature</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.certificate &&
-                                transactions.certificate.txSignature
-                            }
-                        </td>
-                    </tr>
-                </table>
+                <Typography variant="button" display="block" gutterBottom>
+                    Transaction Signatures
+                </Typography>
+                <Box bgcolor="info" p={2}>
+                    <TableContainer>
+                        <Table sx={{width: 650}} aria-label="simple table">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant="overline" display="block" gutterBottom>
+                                            Signature
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="caption" display="block" gutterBottom>
+                                            {
+                                                transactions &&
+                                                transactions.certificate &&
+                                                transactions.certificate.txSignature
+                                            }
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Box>
             </div>
             <div>
-                <b><h2>Aggregated Validator Signature</h2></b>
-                <table>
-                    <tr>
-                        <td>Signature</td>
-                        <td>
-                            {
-                                transactions &&
-                                transactions.certificate &&
-                                transactions.certificate.authSignInfo &&
-                                transactions.certificate.authSignInfo.signature
-                            }
-                        </td>
-                    </tr>
-                </table>
+                <Typography variant="button" display="block" gutterBottom>
+                    Aggregated Validator Signature
+                </Typography>
+                <Box bgcolor="info" p={2}>
+                    <TableContainer>
+                        <Table sx={{width: 650}} aria-label="simple table">
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>
+                                        <Typography variant="overline" display="block" gutterBottom>
+                                            Signature
+                                        </Typography>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Typography variant="caption" display="block" gutterBottom>
+                                            {
+                                                transactions &&
+                                                transactions.certificate &&
+                                                transactions.certificate.authSignInfo &&
+                                                transactions.certificate.authSignInfo.signature
+                                            }
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Box>
             </div>
-        </div>
+        </>
     )
 }
 
