@@ -146,8 +146,8 @@ export class SDK {
 
         //함수 테스트용, 실제 연결할때는 파라미터를 공개키로 받고 아래 코드 대체 예정 
         console.log("Staring get transaction history");
-        const pubkey = '0x7d5784e654d4385fcf059ad6bd0819e2a383ba18';
-        // const pubkey = pub;
+        //const pubkey = '0x7d5784e654d4385fcf059ad6bd0819e2a383ba18';
+        const pubkey = pub;
 
         //공개키로 모든 digest 내역 가져오기
         const resultOfdiget = await provider.getTransactionsForAddress(pubkey, false);
