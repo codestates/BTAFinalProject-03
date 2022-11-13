@@ -15,7 +15,7 @@ const History = () => {
     const pair = useRecoilValue(pairState);
 
     const [historyList, setHistoryList] = useState([]);
-    const [empty, setEmpty] = useState('loading');
+    const [empty, setEmpty] = useState('Fetching Data');
 
     useEffect(() => {
         getHistory();
