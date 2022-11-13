@@ -9,7 +9,7 @@ const HistoryItem = ({data}) => {
             if (!confirm("Go To Sui Explorer")) {
 
             } else {
-                window.open(`https://explorer.devnet.sui.io/transactions/${data.transaction_digest}`, '_blank')
+                window.open(`https://explorer.devnet.sui.io`, '_blank')
             }
         });
     }
@@ -19,27 +19,27 @@ const HistoryItem = ({data}) => {
             <div className='history-digest'>{data.transaction_digest}</div>
             <div className='history-inner-box'>
                 <div>Method</div>
-                <div className='history-type'>{data.method_name}</div>
+                <div className='history-type'>{data.transaction_type}</div>
             </div>
             <div className='history-inner-box'>
                 <div>Type</div>
-                <div className='history-type'>{data._flag}</div>
+                <div className='history-type'>{data.transaction_flag}</div>
             </div>
             <div className='history-inner-box'>
-                <div>Recipients</div>
-                <div className='history-recipients'>{data._recipients}</div>
+                <div>Recipient</div>
+                <div className='history-recipients'>{data.recipient}</div>
             </div>
             <div className='history-inner-box'>
                 <div>Amount</div>
-                <div className='history-amount'>{data._amount}</div>
+                <div className='history-amount'>{data.total_amount}</div>
             </div>
             <div className='history-inner-box'>
                 <div>TotalGasFee</div>
-                <div className='history-gas'>{data._gas}</div>
+                <div className='history-gas'>{data.total_gas_fee}</div>
             </div>
             <div className='history-inner-box'>
                 <div>Date</div>
-                <div className='history-date'>{moment(data.timestamp).format('YYYY-MM-DD')}</div>
+                <div className='history-date'>{moment(data.timestamp).format('YYYY-MM-DD hh:mm:ss')}</div>
             </div>
         </div>
     );

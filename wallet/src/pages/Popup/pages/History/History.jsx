@@ -29,7 +29,7 @@ const History = () => {
         if(historyList.length === 0){
             setEmpty('empty');
         }
-        setHistoryList(historyList);
+        setHistoryList(historyList.reverse());
     }
 
     return (

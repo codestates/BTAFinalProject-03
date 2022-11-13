@@ -45,14 +45,14 @@ export class SDK {
 
         //송금 signer 생성
         const signer = new RawSigner(_keypair, provider);
-        console.log("convert to signer : " + signer);
+        // console.log("convert to signer : " + signer);
 
 
         //공개키가 보유한 sui object 조회
         const map = await this.getOwnSuiList(_pubkey);
-        console.log("Own Sui List : "+ map);
+        // console.log("Own Sui List : "+ map);
         const _suiOnjectId = map.keys().next().value;
-        console.log("_suiOnjectId : "+ _suiOnjectId);
+        // console.log("_suiOnjectId : "+ _suiOnjectId);
 
         const sendAmount = _amount * 10000000;
 
@@ -67,7 +67,7 @@ export class SDK {
 
         const result = await signer.transferSuiWithRequestType(txn);
          
-        console.log(`send sui complete : ${result}`);
+        // console.log(`send sui complete : ${result}`);
         return result;    
 
     }
@@ -98,7 +98,7 @@ export class SDK {
 
         //테스트용 공개키 주소, 파라미터로 공개키 받을 것 
         const _pubkey = publicKey;
-        console.log("STRAT SEARCHING History OF transaction");
+        // console.log("STRAT SEARCHING History OF transaction");
 
         //결과를 리턴하기 위한 map 정의 (key : 오브젝트id, value {타입, 잔액})
         const map = new Map();
@@ -107,7 +107,7 @@ export class SDK {
         const resultOfObjects =  await provider.getObjectsOwnedByAddress(_pubkey);
         //가지고 있는 수이 코인 오브젝트 갯수 
         const sizeOfobject = resultOfObjects.length;
-        console.log("sizeOfobject : " + sizeOfobject);
+        // console.log("sizeOfobject : " + sizeOfobject);
 
         //map에 오브젝트id와 type을 먼저 셋팅 
         for (var i = 0; i < sizeOfobject; i++) {
@@ -130,7 +130,7 @@ export class SDK {
             map.set(resultOfObjects[i].objectId, [tempValue,objectBalance]);                
         }
 
-        console.log("return map : "+map);
+        // console.log("return map : "+map);
         return map;
 
         }
@@ -142,110 +142,59 @@ export class SDK {
     * 02. 각 객체의 digest를 가져오고, 
     * 03. transaction data 에서 필요한 정보를 가져옴. 
     */
-    static async getHistoryTranssaction(pub){
-
-        //함수 테스트용, 실제 연결할때는 파라미터를 공개키로 받고 아래 코드 대체 예정 
-        console.log("Staring get transaction history");
-        //const pubkey = '0x7d5784e654d4385fcf059ad6bd0819e2a383ba18';
-        const pubkey = pub;
-
-        //공개키로 모든 digest 내역 가져오기
-        const resultOfdiget = await provider.getTransactionsForAddress(pubkey, false);
-
-        // 이 데이터로 원하는 데이터 뽑아냄 {return : flag: sent or receiver, recipients : 받은 사람, amount : 받은 돋, gas: 수수료}
-        // flag는 recipents의 주소가 입력한 공개키와 일치하면 받은 돈, 불일치하면 보낸 돈으로 판단 
-
-        let _flag, _recipients, _amount, _gas;
-        const map = new Map();
+    static async getHistoryTranssaction(address){
+        //주소로 모든 digest 내역 가져오기
+        const resultOfdiget = await provider.getTransactionsForAddress(address, false);
 
         let list = [];
-        for (let i=0; i<resultOfdiget.length; i++){
+        for (let i = 0; i < resultOfdiget.length; i++){
             //digest로 transaction 디테일 불러오기
             const history = await provider.getTransactionWithEffects(resultOfdiget[i]);
 
-            // console.log(history);
             //불러온 내역 중에서 transactions만 빼오기
-            const selector = history.certificate.data.transactions;
-            // console.log("selector : " + JSON.stringify(selector));
-    
-    
-            //PaySui가 여러개 토큰을 발행해주는 메소드로 판단되어 분기 처리 
-            const methodName = JSON.stringify(selector).split("\"")[1];
-            // console.log("methodName : "+ methodName);
-    
-            //json data 대괄호를 없애기 위한 작업
-            const a = JSON.stringify(selector[0]);
-            // console.log("a : " + a);
-    
-            _gas = history.effects.events[0].coinBalanceChange.amount;
-            // console.log("_gas : "+_gas);
-    
-            const data = JSON.parse(a);
+            const transactions = history.certificate.data.transactions;
 
-            if(methodName == "PaySui"){
-                // console.log("data.Paysui.amounts : "+ data.PaySui.amounts);
-    
-                //amount가 리스트로 내려오면 내려온 값 합산
-                if(1<data.PaySui.amounts.length){
-                    
-                    const subtotal = data.PaySui.amounts.reduce((accumulator, current) => {
-                        return accumulator + current;
-                    }, 0)
-                    
-                    // console.log("subtotal : "+subtotal);
-                    _amount = subtotal;
-                }else{
-                    _amount = data.PaySui.amounts;
-                }
-    
-                // console.log("data.Paysui.recipients : "+data.PaySui.recipients);
-    
-                //recipients가 복수로 내려오는 경우 확인 (테스트 토큰 지급시 수령인 5개가 모두 동일 주소로 내려옴)
-                if(1<data.PaySui.recipients.length){
-                    _recipients = data.PaySui.recipients[0];
-                }else{
-                    _recipients = data.PaySui.recipients;
-                }
-    
-                //수령인과 공개키를 비교하여 플래그 결정 
-                if(pubkey == _recipients){
-                    _flag = "Received"
-                }else{
-                    _flag = "Sent"
-                }
-    
-            }else if (methodName == "Pay"){
-                // console.log("data.Pay.amounts : "+data.Pay.amounts);
-                _amount = data.Pay.amounts;
-    
-                // console.log("data.Pay.recipients : "+data.Pay.recipients);
-                _recipients = data.Pay.recipients;
-    
-                //수령인과 공개키를 비교하여 플래그 결정 
-                if(pubkey == _recipients){
-                    _flag = "Received"
-                }else{
-                    _flag = "Sent"
-                }
+            //PaySui가 여러개 토큰을 발행해주는 메소드로 판단되어 분기 처리 
+            const transactionType = Object.keys(transactions[0])[0];
+
+            const totalGasFee = history.effects.events[0].coinBalanceChange.amount;
+
+            let amounts;
+            switch(transactionType){
+                case 'PaySui':
+                    amounts = transactions[0][Object.keys(transactions[0])[0]].amounts;
+                    break;
+                case 'TransferSui':
+                    amounts = [transactions[0][Object.keys(transactions[0])[0]].amount];
+                    break;
+                default:
+                    throw 'check transactionType and add case';        
             }
+            const totalAmount = amounts.reduce((acc, cur)=> acc + cur, 0);
+
+            const sender = history.certificate.data.sender;
+
+            let flag = 'Receive';
+            if(sender === address){
+                flag = 'Send';
+            }
+
+            const recipient = transactions[0][Object.keys(transactions[0])[0]].recipient || 
+                transactions[0][Object.keys(transactions[0])[0]].recipients[0] ;
             
-            // console.log(`_flag : ${_flag}, _recipients : ${_recipients}, _amount : ${_amount}, _gas : ${_gas}`);
-            // map.set(i, [_flag, _recipients, _amount, _gas]);
             list.push({
                 transaction_digest: resultOfdiget[i],
-                method_name: methodName,
-                _flag,
-                _recipients,
-                _amount,
-                _gas,
+                transaction_type: transactionType,
+                transaction_flag: flag,
+                recipient: recipient,
+                total_amount: totalAmount,
+                total_gas_fee: totalGasFee,
                 timestamp: history.timestamp_ms
             })
 
         }
 
         return list;
-        // return map;
-
     }
 
     /*
@@ -274,7 +223,7 @@ export class SDK {
         const checkReg2 = /^(0x|0X)/.test(publicKey) ? (publicKey.length - 2) / 2 : publicKey.length / 2;
         const checkReg3 = SUI_ADDRESS_LENGTH
 
-        console.log(`checkReg1 : ${checkReg1}, checkReg2 : ${checkReg2}, checkReg3 : ${checkReg3}`);
+        // console.log(`checkReg1 : ${checkReg1}, checkReg2 : ${checkReg2}, checkReg3 : ${checkReg3}`);
         console.log(checkReg1 && checkReg2 === checkReg3);
         return (checkReg1 && checkReg2 === checkReg3)
 
