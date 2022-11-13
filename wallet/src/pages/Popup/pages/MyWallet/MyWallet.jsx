@@ -20,6 +20,7 @@ const MyWallet = () => {
         setAddress(addressOfPub);
         getBalance(addressOfPub);
         const interval = setInterval(async () => {
+            setFaucetStatus('');
             setBalance(await SDK.getBalance(addressOfPub));
         }, 5000)
 
@@ -48,7 +49,7 @@ const MyWallet = () => {
 
             <div className='wallet-info-box'>
                 <div className='mywallet-address'>{address}</div>
-                <div className='mywallet-balance'>{balance === 'pending' ? '...' : '0.'+balance}  SUI</div>
+                <div className='mywallet-balance'>{balance === 'pending' ? '...' : '0.'+ balance}  SUI</div>
             </div>
 
             <div>

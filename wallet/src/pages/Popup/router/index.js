@@ -1,9 +1,9 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import {useRecoilValue } from "recoil";
 import CreateWallet from "../pages/CreateWallet/CreateWallet";
 import Home from "../pages/Home/Home";
-import SendToken from "../pages/Transaction/SendToken";
-import { intervalState, pageState } from "../recoil";
+import SendToken from "../pages/SendToken/SendToken";
+import { pageState } from "../recoil";
 import Select from "../pages/Select/Select";
 import ConfirmRecoveryPhrase from "../pages/ConfirmRecoveryPhrase/ConfirmRecoveryPhrase";
 import MyWallet from "../pages/MyWallet/MyWallet";
