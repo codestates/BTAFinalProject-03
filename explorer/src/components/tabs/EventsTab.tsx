@@ -146,6 +146,10 @@ const EventsTab = () => {
                                           addr: transactions.certificate.data
                                             .sender,
                                         }}
+                                        style={{
+                                          color: "rgb(31 100 147)",
+                                          textDecoration: "none",
+                                        }}
                                       >
                                         {transactions &&
                                           transactions.certificate &&
@@ -217,6 +221,10 @@ const EventsTab = () => {
                                         objId:
                                           item.coinBalanceChange.coinObjectId,
                                       }}
+                                      style={{
+                                        color: "rgb(31 100 147)",
+                                        textDecoration: "none",
+                                      }}
                                     >
                                       {item &&
                                         item.coinBalanceChange &&
@@ -272,6 +280,10 @@ const EventsTab = () => {
                                       state={{
                                         addr: item.coinBalanceChange.owner
                                           .AddressOwner,
+                                      }}
+                                      style={{
+                                        color: "rgb(31 100 147)",
+                                        textDecoration: "none",
                                       }}
                                     >
                                       {item &&
@@ -366,6 +378,10 @@ const EventsTab = () => {
                                       state={{
                                         objId: item.mutateObject.objectId,
                                       }}
+                                      style={{
+                                        color: "rgb(31 100 147)",
+                                        textDecoration: "none",
+                                      }}
                                     >
                                       {item &&
                                         item.mutateObject &&
@@ -417,6 +433,10 @@ const EventsTab = () => {
                                         "/get-addr/" + item.mutateObject.sender
                                       }
                                       state={{ addr: item.mutateObject.sender }}
+                                      style={{
+                                        color: "rgb(31 100 147)",
+                                        textDecoration: "none",
+                                      }}
                                     >
                                       {item &&
                                         item.mutateObject &&
@@ -482,6 +502,10 @@ const EventsTab = () => {
                                     <Link
                                       to={"/get-addr/" + item.newObject.sender}
                                       state={{ addr: item.newObject.sender }}
+                                      style={{
+                                        color: "rgb(31 100 147)",
+                                        textDecoration: "none",
+                                      }}
                                     >
                                       {item &&
                                         item.newObject &&
@@ -496,6 +520,10 @@ const EventsTab = () => {
                                       state={{
                                         addr: item.newObject.recipient
                                           .AddressOwner,
+                                      }}
+                                      style={{
+                                        color: "rgb(31 100 147)",
+                                        textDecoration: "none",
                                       }}
                                     >
                                       {item &&
@@ -564,11 +592,17 @@ const EventsTab = () => {
                                           "/get-addr/" + item.moveEvent.sender
                                         }
                                         state={{ addr: item.moveEvent.sender }}
+                                        style={{
+                                          textDecoration: "none",
+                                        }}
                                       >
                                         <Typography
                                           variant="caption"
                                           display="block"
                                           gutterBottom
+                                          style={{
+                                            color: "rgb(31 100 147)",
+                                          }}
                                         >
                                           {item.moveEvent.sender}
                                         </Typography>

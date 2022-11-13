@@ -220,6 +220,10 @@ const GetAddr = () => {
                                   state={{
                                     objId: item.details.data.fields.id.id,
                                   }}
+                                  style={{
+                                    color: "rgb(31 100 147)",
+                                    textDecoration: "none",
+                                  }}
                                 >
                                   {item.details.data.fields.id.id}
                                 </Link>
@@ -268,6 +272,10 @@ const GetAddr = () => {
                                   <Link
                                     to={"/get-obj/" + item.objectId}
                                     state={{ objId: item.objectId }}
+                                    style={{
+                                      color: "rgb(31 100 147)",
+                                      textDecoration: "none",
+                                    }}
                                   >
                                     {item.objectId}
                                   </Link>
